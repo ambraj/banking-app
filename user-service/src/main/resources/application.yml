@@ -1,0 +1,29 @@
+server.port: 8091
+spring:
+  application:
+    name: user-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/banking_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 60000
+
+jwt:
+  secret: your-secure-jwt-secret-key-1234567890
+  expiration: 1800000 # 30 minutes in milliseconds
+
+logging:
+  level:
+    org.springframework.data.redis: DEBUG
+    redis.clients.jedis: DEBUG
+    org.springframework.security: DEBUG
