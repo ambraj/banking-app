@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -54,18 +55,22 @@ public class UserService {
     }
 
     public LoginResponse authenticate(LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
-        );
-        if (authentication.isAuthenticated()) {
-            UserEntity userEntity = userRepository.findByUsername(loginRequest.getUsername())
-                    .orElseThrow(() -> new ConflictException("Username is not registered!"));
-            String token = jwtTokenProvider.generateToken(userEntity.getUsername(), userEntity.getRole());
-            LoginResponse loginResponse = new LoginResponse();
-            loginResponse.setToken(token);
-            return loginResponse;
-        } else {
-            throw new ConflictException("Invalid username or password!");
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+            );
+            if (authentication.isAuthenticated()) {
+                UserEntity userEntity = userRepository.findByUsername(loginRequest.getUsername())
+                        .orElseThrow(() -> new ConflictException("Username is not registered!"));
+                String token = jwtTokenProvider.generateToken(userEntity.getUsername(), userEntity.getRole());
+                LoginResponse loginResponse = new LoginResponse();
+                loginResponse.setToken(token);
+                return loginResponse;
+            } else {
+                throw new ConflictException("Invalid username or password!");
+            }
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Invalid credentials", e);
         }
     }
 }
