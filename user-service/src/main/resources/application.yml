@@ -26,3 +26,4 @@ logging:
   level:
     org.springframework.data.redis: DEBUG
     redis.clients.jedis: DEBUG
+    org.springframework.security: DEBUG

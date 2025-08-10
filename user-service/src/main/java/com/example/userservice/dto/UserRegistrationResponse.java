@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponse {
+public class UserRegistrationResponse {
 
     private Long userId;
 
