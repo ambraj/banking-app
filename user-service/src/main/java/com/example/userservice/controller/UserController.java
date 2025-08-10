@@ -1,5 +1,7 @@
 package com.example.userservice.controller;
 
+import com.example.userservice.dto.LoginRequest;
+import com.example.userservice.dto.LoginResponse;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.dto.UserRegistrationResponse;
 import com.example.userservice.service.RedisTestService;
@@ -8,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,4 +40,12 @@ public class UserController {
         log.info("Received request to fetch all users");
         return userService.fetchAllUsers();
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        LoginResponse response = userService.authenticate(loginRequest);
+        return ResponseEntity.ok(response);
+    }
+
 }

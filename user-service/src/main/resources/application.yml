@@ -19,7 +19,7 @@ spring:
       timeout: 60000
 
 jwt:
-  secret: your-secure-jwt-secret-key-1234567890
+  secret: 5ZG8wIesTpH6vkKDlsTatcfCzg9O+HKgfnbQuuRXmGOr4gG3e5bmk6OoHkFjBrNH # your-secure-jwt-secret-key-1234567890
   expiration: 1800000 # 30 minutes in milliseconds
 
 logging:
